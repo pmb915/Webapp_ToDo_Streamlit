@@ -12,7 +12,7 @@ import time
 
 ####  Local URL: http://localhost:8501
 ####  Network URL: http://10.252.3.223:8501
-#### (.venv) PS C:\\m18_work\\udemy\\ThePythonMegaCourse\\Webapp_ToDo_Streamlit> streamlit run app1.py
+#### (.venv) PS C:\\m18_work\\udemy\\ThePythonMegaCourse\\Webapp_ToDo_Streamlit> streamlit run Web_ToDo_App.py
 
 
 
@@ -37,7 +37,8 @@ class MyCustomError(Exception):
         super().__init__(self.message) # Pass the message to the base Exception class
 
 todo_list = populate_todo_list(todo_file)
-
+def clear_text_input(k):
+    st.session_state[k] = ""
 def add_todo():
     try:
         todo_list = populate_todo_list(todo_file)
@@ -62,17 +63,26 @@ def add_todo():
         # window['todolist'].update(values=todo_list)
         #window['todo'].update(value='')
         print(todo_list)
+    finally:
+        clear_text_input('new_todo')
 
 
 
 st.title("ToDo WebApp")
 ### user = st.text_input("Enter your name")
 user = "PB915's"
-st.subheader(f"{user} ToDo task")
+st.subheader(f"{user} ToDo task, select the checkbox to remove task")
+
+for index, todo in enumerate(todo_list):
+    checkbox = st.checkbox(todo, key=todo )
+    if checkbox:
+        todo_list.pop(index)
+        del st.session_state[todo]
+        write_file(todo_file, todo_list)
+        st.rerun()
 
 
 
-for todo in todo_list:
-    st.checkbox(todo)
+st.text_input(label = "", placeholder= "Add ToDo Task:", on_change=add_todo, key='new_todo',   )
 
-st.text_input(label = "", placeholder= "Add ToDo Task:", on_change=add_todo, key='new_todo')
+# st.session_state
