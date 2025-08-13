@@ -14,6 +14,7 @@ import time
 ####  Network URL: http://10.252.3.223:8501
 #### (.venv) PS C:\\m18_work\\udemy\\ThePythonMegaCourse\\Webapp_ToDo_Streamlit> streamlit run Web_ToDo_App.py
 
+st.set_page_config(layout="wide"   )
 
 
 current_location = os.getcwd()
@@ -71,7 +72,10 @@ def add_todo():
 st.title("ToDo WebApp")
 ### user = st.text_input("Enter your name")
 user = "PB915's"
-st.subheader(f"{user} ToDo task, select the checkbox to remove task")
+st.subheader(f"{user} ToDo task")
+st.write("<b>Note:</b> &nbsp; select the checkbox to remove task", unsafe_allow_html=True)
+
+st.text_input(label = "", placeholder= "Add ToDo Task and Press Enter..", on_change=add_todo, key='new_todo',   )
 
 for index, todo in enumerate(todo_list):
     checkbox = st.checkbox(todo, key=todo )
@@ -83,6 +87,6 @@ for index, todo in enumerate(todo_list):
 
 
 
-st.text_input(label = "", placeholder= "Add ToDo Task:", on_change=add_todo, key='new_todo',   )
+
 
 # st.session_state
